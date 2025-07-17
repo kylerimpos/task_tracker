@@ -2,6 +2,10 @@
 
 A simple command-line application to manage your tasks. Add, view, update, delete, and track the status of your tasks with ease.
 
+## Resources
+
+This project is inspired by the [Task Tracker Project Roadmap](https://roadmap.sh/projects/task-tracker) on roadmap.sh.  
+
 ## Features
 
 - Add new tasks
