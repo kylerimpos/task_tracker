@@ -1,75 +1,72 @@
-import json
-import os
-
-TASK_FILE = 'tasks.json'
-
-def load_tasks():
-    """Load tasks from the JSON file."""
-    if not os.path.exists(TASK_FILE):
-        return []
-    with open(TASK_FILE, 'r') as file:
-        return json.load(file)
-    
-def save_tasks(tasks):
-    with open(TASK_FILE, 'w') as file:
-        json.dump(tasks, file, indent=4)
-    
-def duplicate(title):
-    tasks = load_tasks()
-    for task in tasks:
-        if task['title'].lower() == title.lower():
-            return True
-    return False
-
-def add_task(title):
-    tasks = load_tasks()
-    task = {
-        "id": len(tasks) + 1,
-        "title": title,
-        "Status": "Not Started"
-    }
-
-    tasks.append(task)
-    save_tasks(tasks)
-    print(f"Task '{title}' added successfully.")
-
-def list_tasks():
-    tasks = load_tasks()
-
-    if not tasks:
-        print("No tasks were found.")
-        return
-
-    print("Task List:")
-    for task in tasks:
-        print(f"{task['id']} --- {task['title']} --- {task['Status']}")
-
+from task_manager import TaskManager
 
 def show_menu():
     print("\n🛠 Task Tracker")
-    print("1. Add Task")ß
+    print("1. Add Task")
     print("2. View Tasks")
-    print("3. Update Task")
+    print("3. Update Title")
     print("4. Delete Task")
-    print("5. Toggle Task Completion")
-    print("6. Exit")
+    print("5. Toggle Task In Progress")
+    print("6. Toggle Task Completed")
+    print("7. Exit")
 
 def main():
+
+    manager = TaskManager()
+
     while True:
         show_menu()
-        choice = input("Enter your choice: ").strip()
+        choice = input("\nEnter your choice: ").strip()
 
         if choice == '1':
             title = input("Enter task title: ").strip()
             if title:
-                if duplicate(title):
-                    print("Task with this title already exists.")
-                else:
-                    add_task(title)
+                manager.add_task(title)
             else:
                 print("Task title cannot be empty.")
-        elif choice == '2':
-            list_tasks()
 
+        elif choice == '2':
+            manager.list_tasks()
+
+        elif choice == '3':
+            task_id = int(input("Enter task id to update: "))
+            title = input("New title: ").strip()
+            if title:
+                manager.update_task(task_id, title)
+            else:
+                print("Task title cannot be empty.")
+
+        elif choice == '4':
+            task_id = int(input("Enter task id to delete: "))
+            if task_id:
+                manager.delete_task(task_id)
+            else:
+                print("Task id cannot be empty.")
+        
+        elif choice == '5':
+            manager.list_tasks()
+
+            task_id = int(input("\nEnter task id: "))
+            if task_id:
+                manager.toggle_in_progress(task_id)
+            else:
+                print("Task id cannot be empty.")
+
+        elif choice == '6':
+            manager.list_tasks()
+
+            task_id = int(input("\nEnter task id: "))
+            if task_id:
+                manager.toggle_complete(task_id)
+            else:
+                print("Task id cannot be empty.")
+
+        elif choice == '7':
+            print("Exiting Task Tracker...")
+            break
+    
+        else:
+            print("Invalid choice. Enter 1 - 6.")
+    
 if __name__ == "__main__":
     main()
