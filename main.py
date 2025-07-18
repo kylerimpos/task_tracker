@@ -2,13 +2,13 @@ from task_manager import TaskManager
 
 def show_menu():
     print("\n🛠 Task Tracker")
-    print("1. Add Task")
-    print("2. View Tasks")
-    print("3. Update Title")
-    print("4. Delete Task")
-    print("5. Toggle Task In Progress")
-    print("6. Toggle Task Completed")
-    print("7. Exit")
+    print("1 - Add Task")
+    print("2 - View Tasks")
+    print("3 - Update Title")
+    print("4 - Delete Task")
+    print("5 - Toggle Task In Progress")
+    print("6 - Toggle Task Completed")
+    print("7 - Exit")
 
 def main():
 
@@ -28,7 +28,17 @@ def main():
                 print("Task title cannot be empty.")
 
         elif choice == '2':
-            manager.list_tasks()
+            print("\nList Views: ")
+            print("1 - All Task")
+            print("2 - Not yet started tasks.")
+            print("3 - In Progress tasks.")
+            print("4 - Completed tasks.")
+
+            view_choice = int(input("Enter your choice: "))
+            if view_choice:
+                manager.list_tasks(view_choice)
+            else:
+                print("View choice cannot be empty.")
 
         elif choice == '3':
             task_id = int(input("Enter task id to update: "))
@@ -68,7 +78,7 @@ def main():
             break
     
         else:
-            print("Invalid choice. Enter 1 - 6.")
+            print("Invalid choice. Enter 1 - 7.")
     
 if __name__ == "__main__":
     main()

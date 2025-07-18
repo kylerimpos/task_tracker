@@ -68,16 +68,28 @@ class TaskManager:
         
         print("Task not found.")
 
-    def list_tasks(self):
+    def list_tasks(self, view_choice: int):
         tasks = self.load_tasks()
 
         if not tasks:
             print("No tasks were found.")
             return
         
-        print("\nTask List: ")
+        if view_choice == 2:
+            view = [task for task in tasks if task['status'] == "Not Started"]
+        elif view_choice == 3:
+            view = [task for task in tasks if task['status'] == "In Progress"]
+        elif view_choice == 4:
+            view = [task for task in tasks if task['status'] == "Completed"]
+        else:
+            view = tasks
 
-        print(tb.tabulate(tasks, headers="keys", tablefmt="grid"))
+        if not view:
+            print("No tasks found for the selected view.")
+            return
+        
+        print("\nTasks:")
+        print(tb.tabulate(view, headers="keys", tablefmt="grid"))
 
     def delete_task(self, task_id: int):
         tasks = self.load_tasks()
@@ -134,4 +146,3 @@ class TaskManager:
         
         print("Task not found.")
     
-
