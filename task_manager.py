@@ -1,5 +1,7 @@
 import json
 import os
+import time
+import tabulate as tb
 
 DATA_DIR = "data"
 TASK_FILE = os.path.join(DATA_DIR, "tasks.json")
@@ -37,7 +39,9 @@ class TaskManager:
         task = {
             "id": len(tasks) + 1,
             "title": title,
-            "status": "Not Started"
+            "status": "Not Started",
+            "created_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "updated_at": time.strftime("%Y-%m-%d %H:%M:%S")
         }
 
         tasks.append(task)
@@ -57,6 +61,7 @@ class TaskManager:
         for task in tasks:
             if task["id"] == task_id:
                 task["title"] = title
+                task["updated_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
                 print("Title updated successfully.")
                 self.save_tasks(tasks)
                 return
@@ -72,8 +77,7 @@ class TaskManager:
         
         print("\nTask List: ")
 
-        for task in tasks:
-            print(f"{task['id']} --- {task['title']} --- {task['status']}")
+        print(tb.tabulate(tasks, headers="keys", tablefmt="grid"))
 
     def delete_task(self, task_id: int):
         tasks = self.load_tasks()
@@ -106,6 +110,7 @@ class TaskManager:
         for task in tasks:
             if task['id'] == task_id:
                 task['status'] = "In Progress"
+                task['updated_at'] = time.strftime("%Y-%m-%d %H:%M:%S")
                 self.save_tasks(tasks)
                 print(f"{task['title']} now in progress.")
                 return
@@ -122,6 +127,7 @@ class TaskManager:
         for task in tasks:
             if task['id'] == task_id:
                 task['status'] = "Completed"
+                task['updated_at'] = time.strftime("%Y-%m-%d %H:%M:%S")
                 self.save_tasks(tasks)
                 print(f"{task['title']} now completed!")
                 return
